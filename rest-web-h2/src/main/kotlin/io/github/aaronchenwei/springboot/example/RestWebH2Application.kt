@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.data.repository.findByIdOrNull
 
 @SpringBootApplication
 class RestWebH2Application {
@@ -22,15 +23,17 @@ class RestWebH2Application {
     repository.save(Account(4L, "David", 400.0))
     repository.save(Account(5L, "Michelle", 500.0))
 
-    // fetch all customers
+    // fetch all accounts
     log.info("Accounts found with findAll():")
     log.info("-------------------------------")
-    repository.findAll().forEach { log.info(it.toString()) }
+    repository
+      .findAll()
+      .forEach { log.info(it.toString()) }
     log.info("")
 
-    // fetch an individual customer by ID
-    val customer = repository.findById(1L)
-    customer.ifPresent {
+    // fetch an individual account by ID
+    val customer = repository.findByIdOrNull(1L)
+    customer?.let {
       log.info("Account found with findById(1L):")
       log.info("--------------------------------")
       log.info(it.toString())

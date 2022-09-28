@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class AccountQueryService(private val repo: AccountRepository) {
+
   fun getAccountById(accountId: Long) = repo.findByIdOrNull(accountId)
+
   fun getAccounts(): List<Account> = repo.findAll()
+
 }

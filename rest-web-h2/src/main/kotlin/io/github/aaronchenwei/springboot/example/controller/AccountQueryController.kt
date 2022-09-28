@@ -20,7 +20,6 @@ class AccountQueryController(private val accountQueryService: AccountQueryServic
   }
 
   @GetMapping("/list")
-  fun getAccounts(): List<Account?>? {
-    return accountQueryService.getAccounts()
-  }
+  fun getAccounts(): List<Account?>? = accountQueryService.getAccounts()
+
 }

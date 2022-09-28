@@ -14,19 +14,30 @@ class UserService(private val repo: UserRepository) {
   suspend fun findByEmail(email: String) = repo.findByEmail(email).asFlow()
 
   suspend fun addOne(user: UserDTO) = repo.save(user.toModel()).awaitFirstOrNull()
-  
+
   suspend fun updateOne(id: Long, user: UserDTO): User? {
     val existingUser = findById(id)
-    return if (existingUser != null) repo.save(user.toModel(withId = id))
-      .awaitFirstOrNull() else null
+    return if (existingUser != null) {
+      repo
+        .save(
+          user.toModel(withId = id)
+        )
+        .awaitFirstOrNull()
+    } else {
+      null
+    }
   }
 
   suspend fun deleteOne(id: Long): Boolean {
     val existingUser = findById(id)
     return if (existingUser != null) {
-      repo.delete(existingUser).awaitFirstOrNull()
+      repo
+        .delete(existingUser)
+        .awaitFirstOrNull()
       true
-    } else false
+    } else {
+      false
+    }
   }
 
 }

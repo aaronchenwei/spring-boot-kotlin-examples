@@ -14,9 +14,17 @@ import org.springframework.web.bind.annotation.RestController
 class AccountQueryController(private val accountQueryService: AccountQueryService) {
 
   @GetMapping("/{accountId}")
-  fun getAccountById(@PathVariable(value = "accountId") accountId: Long): ResponseEntity<Account?>? {
-    val accountOpt: Account? = accountQueryService.getAccountById(accountId)
-    return accountOpt?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
+  fun getAccountById(@PathVariable(value = "accountId") accountId: Long?): ResponseEntity<Account?>? {
+    return if (accountId == null) {
+      ResponseEntity.badRequest().build()
+    } else {
+      val account = accountQueryService.getAccountById(accountId)
+      if (account != null) {
+        ResponseEntity.ok(account)
+      } else {
+        ResponseEntity.notFound().build()
+      }
+    }
   }
 
   @GetMapping("/list")
